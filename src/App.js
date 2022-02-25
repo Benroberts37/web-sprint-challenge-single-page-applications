@@ -25,12 +25,14 @@ const initialFormErrors = {
 }
 
 const initialOrders=[]
+const initialDisabled = true;
 
 const App = () => {
 
   const [formData, setFormData] = useState(initialvalues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [orders, setOrders] = useState (initialOrders);
+  const [disabled, setDisabled] = useState(initialDisabled)
 
 
   const getOrder = getOrder => {
@@ -45,7 +47,10 @@ const App = () => {
 
 
     const validate = (name, value) => {
-
+      yup.reach(FormSchema, name)
+        .validate(value)
+        .then(() => setFormErrors({...formErrors, [name]: ''}))
+        .catch(err => setFormErrors({...formErrors, [name]: err.errors[0]}))
     }
 
     const inputChange = (name, value) => {
@@ -68,6 +73,10 @@ const App = () => {
       getOrder(newPizza)
     }
 
+    useEffect(() => {
+      FormSchema.isValid(formData).then(valid => setDisabled(!valid))
+    }, [formData])
+
   return (
     <>
     <Router>
@@ -75,7 +84,7 @@ const App = () => {
         <Link id='order-pizza' to='/'>Home</Link>
         <Link to='/pizza'>Form</Link>
       </nav>
-        <Route exact path='/'>
+        <Route exact path='/pizza'>
           <div>
             <h1>Lambda Eats</h1>
           </div>
@@ -86,6 +95,7 @@ const App = () => {
           change={inputChange}
           submit={formSubmit}
           errors={formErrors}
+          disabled={disabled}
           />
         </Route>
     </Router>
