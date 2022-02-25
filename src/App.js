@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter as Route, Link} from 'react-router-dom'
+import {Route, Link} from 'react-router-dom'
 
 import Pizza from "./Components/Pizza";
 

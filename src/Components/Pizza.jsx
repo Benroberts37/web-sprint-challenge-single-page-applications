@@ -3,10 +3,10 @@ import axios from 'axios'
 import * as yup from 'yup'
 
 const formSchema = yup.object().shape({
-    name: yup
+        name: yup
         .string()
         .required('Must enter a name')
-        .min(2, 'name must be at least 2 characters'),
+        .min(2, "name must be at least 2 characters"),
     sauce: yup
         .string()
         .oneOf(['red sauce', 'buffalo', 'garlic']),
@@ -64,25 +64,26 @@ const Pizza = props => {
               chicken: formData.chicken,
               grilled_onions: formData.grilled_onions,
               grilled_peppers: formData.grilled_peppers,
-              specialInstructions: formData.specialInstructions,
+              specialInstructions: formData.specialInstructions
           }
           evt.preventDefault()
 
           axios.post('https://reqres.in/api/orders', newOrder)
-            .then(resp => console.log(resp.data))
-            .catch(err => console.error(err))
-            setFormData(initialValues)
+          .then(response => console.log(response.data))
+          .catch(err => console.error(err))
+        setFormData(initialValues)
       }
 
       return (
         <div>
         <h1>Build a pizza!</h1>
         <form id="pizza-form" onSubmit={handleSubmit}>
+            {formErrors.name.length > 0 && <p className='error'>{formErrors.name}</p>}
             <label>Name
                 <input
                     name='name'
                     type='text'
-                    id='input_name'
+                    id='name-input'
                     onChange={onChange}
                     value={formData.name}
                     placeholder='Name'
@@ -169,10 +170,10 @@ const Pizza = props => {
             <label>Special instructions
                 <input 
                 type ='text'
-                name = 'special instructions'
+                name = 'specialInstructions'
                 value = {formData.specialInstructions}
                 id = 'special-text'
-                onChange={(onChange)}
+                onChange={onChange}
                 />
             </label>
 
